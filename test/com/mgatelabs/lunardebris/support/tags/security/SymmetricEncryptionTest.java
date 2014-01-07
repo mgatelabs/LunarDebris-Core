@@ -3,8 +3,8 @@ package com.mgatelabs.lunardebris.support.tags.security;
 import com.mgatelabs.bytemapper.support.io.FormatIO;
 import com.mgatelabs.bytemapper.util.BMResult;
 import com.mgatelabs.bytemapper.util.loaders.SimpleFormatLoader;
-import com.mgatelabs.lunardebris.support.enums.EncryptionAlgorithmModes;
-import com.mgatelabs.lunardebris.support.enums.EncryptionAlgorithmPaddingSchemes;
+import com.mgatelabs.lunardebris.support.enums.EncryptionModes;
+import com.mgatelabs.lunardebris.support.enums.EncryptionPaddingSchemes;
 import com.mgatelabs.lunardebris.support.enums.EncryptionAlgorithms;
 import com.mgatelabs.lunardebris.support.tags.SymmetricEncryption;
 import com.mgatelabs.lunardebris.util.LunarSupport;
@@ -19,49 +19,49 @@ import java.io.ByteArrayOutputStream;
 public class SymmetricEncryptionTest extends TestCase {
 
     public void testBlowfishMinKeyLength() throws Exception {
-        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.Blowfish, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.Blowfish, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         en.generateKey();
         tryEncryption(en);
     }
 
     public void testAESMinKeyLength() throws Exception {
-        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.AES, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.AES, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         en.generateKey();
         tryEncryption(en);
     }
 
     public void testDESMinKeyLength() throws Exception {
-        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.DES, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.DES, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         en.generateKey();
         tryEncryption(en);
     }
 
     public void testTripleDESMinKeyLength() throws Exception {
-        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.TripleDES, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.TripleDES, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         en.generateKey();
         tryEncryption(en);
     }
 
     public void testBlowfishMaxKeyLength() throws Exception {
-        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.Blowfish, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.Blowfish, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         en.generateKey(LunarSupport.getSecureRandom(), en.getAlgorithm().getMaxKeySize());
         tryEncryption(en);
     }
 
     public void testAESMaxKeyLength() throws Exception {
-        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.AES, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.AES, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         en.generateKey(LunarSupport.getSecureRandom(), en.getAlgorithm().getMaxKeySize());
         tryEncryption(en);
     }
 
     public void testDESMaxKeyLength() throws Exception {
-        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.DES, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.DES, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         en.generateKey(LunarSupport.getSecureRandom(), en.getAlgorithm().getMaxKeySize());
         tryEncryption(en);
     }
 
     public void testTripleDESMaxKeyLength() throws Exception {
-        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.TripleDES, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.TripleDES, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         en.generateKey(LunarSupport.getSecureRandom(), en.getAlgorithm().getMaxKeySize());
         tryEncryption(en);
     }
@@ -97,7 +97,7 @@ public class SymmetricEncryptionTest extends TestCase {
      * @throws Exception
      */
     public void testUnlimitedStrengthJurisdictionPolicyFilesInstalled() throws Exception {
-        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.Blowfish, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption en = new SymmetricEncryption(EncryptionAlgorithms.Blowfish, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         en.generateKey(LunarSupport.getSecureRandom(), en.getAlgorithm().getMaxKeySize());
         tryEncryption(en);
     }
@@ -108,7 +108,7 @@ public class SymmetricEncryptionTest extends TestCase {
      */
     public void testByteMapping() throws Exception {
 
-        SymmetricEncryption orig = new SymmetricEncryption(EncryptionAlgorithms.Blowfish, EncryptionAlgorithmModes.CBC, EncryptionAlgorithmPaddingSchemes.PKCS5Padding);
+        SymmetricEncryption orig = new SymmetricEncryption(EncryptionAlgorithms.Blowfish, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5Padding);
         orig.generateKey();
 
         ByteArrayOutputStream savedStream = new ByteArrayOutputStream(2048);

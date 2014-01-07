@@ -1,7 +1,7 @@
 package com.mgatelabs.lunardebris.support.tags;
 
-import com.mgatelabs.lunardebris.support.enums.EncryptionAlgorithmModes;
-import com.mgatelabs.lunardebris.support.enums.EncryptionAlgorithmPaddingSchemes;
+import com.mgatelabs.lunardebris.support.enums.EncryptionModes;
+import com.mgatelabs.lunardebris.support.enums.EncryptionPaddingSchemes;
 import com.mgatelabs.lunardebris.support.enums.EncryptionAlgorithms;
 import com.mgatelabs.lunardebris.support.interfaces.MessageKeyInterface;
 import com.mgatelabs.lunardebris.util.LunarSupport;
@@ -19,8 +19,8 @@ import java.security.SecureRandom;
 public class SymmetricEncryption implements MessageKeyInterface {
 
     private EncryptionAlgorithms algorithm;
-    private EncryptionAlgorithmModes mode;
-    private EncryptionAlgorithmPaddingSchemes padding;
+    private EncryptionModes mode;
+    private EncryptionPaddingSchemes padding;
     private byte[] encodedKey;
     private byte[] initializationVector;
     private int keySize;
@@ -32,7 +32,7 @@ public class SymmetricEncryption implements MessageKeyInterface {
         this.keySize = 0;
     }
 
-    public SymmetricEncryption(EncryptionAlgorithms algorithm, EncryptionAlgorithmModes mode, EncryptionAlgorithmPaddingSchemes padding) {
+    public SymmetricEncryption(EncryptionAlgorithms algorithm, EncryptionModes mode, EncryptionPaddingSchemes padding) {
         this.algorithm = algorithm;
         this.mode = mode;
         this.padding = padding;
@@ -117,19 +117,19 @@ public class SymmetricEncryption implements MessageKeyInterface {
         this.algorithm = algorithm;
     }
 
-    public EncryptionAlgorithmModes getMode() {
+    public EncryptionModes getMode() {
         return mode;
     }
 
-    public void setMode(EncryptionAlgorithmModes mode) {
+    public void setMode(EncryptionModes mode) {
         this.mode = mode;
     }
 
-    public EncryptionAlgorithmPaddingSchemes getPadding() {
+    public EncryptionPaddingSchemes getPadding() {
         return padding;
     }
 
-    public void setPadding(EncryptionAlgorithmPaddingSchemes padding) {
+    public void setPadding(EncryptionPaddingSchemes padding) {
         this.padding = padding;
     }
 

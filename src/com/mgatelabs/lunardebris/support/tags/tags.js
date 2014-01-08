@@ -43,24 +43,15 @@
         },
 
         {
-            "name": "SymmetricEncryption",
+            "name": "EncryptionTransport",
             "description": "Used to perform blowfish encryption",
             "identity": "100",
             "min": "1",
             "max": "0",
             "fields": [
                 {
-                    "name": "encodedKey",
-                    "description":"Holds the symmetric key",
-                    "type": "blob",
-                    "min": "1",
-                    "max": "0",
-                    "required":"true",
-                    "properties": {}
-                },
-                {
-                    "name": "initializationVector",
-                    "description":"Holds the symmetric initialization vector",
+                    "name": "key",
+                    "description":"Holds the key",
                     "type": "blob",
                     "min": "1",
                     "max": "0",
@@ -75,6 +66,33 @@
                     "max": "0",
                     "required":"true",
                     "properties": {}
+                },
+                {
+                     "name": "format",
+                     "description":"Format key is saved as",
+                     "type": "String",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
+                },
+                {
+                    "name": "iv",
+                    "description":"Holds the initialization vector",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                     "name": "type",
+                     "description":"The encryption type",
+                     "type": "enum",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
                 },
                 {
                      "name": "algorithm",
@@ -102,6 +120,24 @@
                     "max": "0",
                     "required":"false",
                     "properties": {}
+                },
+                {
+                 "name": "start",
+                 "description":"The starting valid datetime in UTC",
+                 "type": "date",
+                 "min": "1",
+                 "max": "0",
+                 "required":"false",
+                 "properties": {}
+                },
+                {
+                  "name": "expire",
+                  "description":"The expire datetime in UTC",
+                  "type": "date",
+                  "min": "1",
+                  "max": "0",
+                  "required":"false",
+                  "properties": {}
                 }
             ]
         }

@@ -8,7 +8,7 @@ import com.mgatelabs.bytemapper.util.FileLink;
 public class MailTransport {
 
     /**
-     * The message content, gzip + symmetric encrypted (Blowfish, AES, DES, TripleDES...)
+     * The message content, gzip + symmetric encrypted (BLOWFISH, AES, DES, DESede...)
      */
     FileLink message;
 

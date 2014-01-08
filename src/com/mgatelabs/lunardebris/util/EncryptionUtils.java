@@ -27,8 +27,8 @@ public class EncryptionUtils {
 
         final KeyPair keyPair = keyGen.generateKeyPair();
 
-        results.put(EncryptionKeyTypes.PRIVATE_KEY, new EncryptionTransport(EncryptionKeyTypes.PRIVATE_KEY, keyPair.getPrivate().getEncoded(), keySize, keyPair.getPrivate().getFormat(), null, EncryptionAlgorithms.RSA, mode, padding));
-        results.put(EncryptionKeyTypes.PUBLIC_KEY, new EncryptionTransport(EncryptionKeyTypes.PUBLIC_KEY, keyPair.getPublic().getEncoded(), keySize, keyPair.getPublic().getFormat(), null, EncryptionAlgorithms.RSA, mode, padding));
+        results.put(EncryptionKeyTypes.PRI, new EncryptionTransport(EncryptionKeyTypes.PRI, keyPair.getPrivate().getEncoded(), keySize, keyPair.getPrivate().getFormat(), null, EncryptionAlgorithms.RSA, mode, padding));
+        results.put(EncryptionKeyTypes.PUB, new EncryptionTransport(EncryptionKeyTypes.PUB, keyPair.getPublic().getEncoded(), keySize, keyPair.getPublic().getFormat(), null, EncryptionAlgorithms.RSA, mode, padding));
 
         return results;
     }
@@ -48,10 +48,10 @@ public class EncryptionUtils {
         SecretKey secKey = keyGenerator.generateKey();
         secKey.getEncoded();
 
-        byte [] iv = (new byte[algorithm.getInitializationVector(keySize)]);
+        byte [] iv = (new byte[algorithm.getIV(keySize)]);
         random.nextBytes(iv);
 
-        return new EncryptionTransport(EncryptionKeyTypes.SYMMETRIC, secKey.getEncoded(), keySize, secKey.getFormat(), iv, algorithm, mode, padding);
+        return new EncryptionTransport(EncryptionKeyTypes.SYM, secKey.getEncoded(), keySize, secKey.getFormat(), iv, algorithm, mode, padding);
     }
 
 }

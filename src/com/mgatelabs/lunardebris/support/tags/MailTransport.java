@@ -2,47 +2,63 @@ package com.mgatelabs.lunardebris.support.tags;
 
 import com.mgatelabs.bytemapper.util.FileLink;
 
+import java.util.Date;
+
 /**
  * Created by MiniMegaton on 1/4/14.
  */
 public class MailTransport {
 
     /**
-     * The message content, gzip + symmetric encrypted (BLOWFISH, AES, DES, DESede...)
+     * The envelope content, gzip + symmetric encrypted (BLOWFISH, AES, DES, DESede...)
      */
-    FileLink message;
-
-    /**
-     * Optional hash of the message
-     */
-    byte [] hash;
+    FileLink envelope;
 
     /**
      * The security details, which have been gzip + RSA Encrypted
      */
-    FileLink security;
+    FileLink key;
 
-    public FileLink getMessage() {
-        return message;
+    /**
+     * The required date that it was generated on in UTC
+     */
+    Date generated;
+
+    /**
+     * Optional hash of the envelope
+     */
+    DigestTransport hash;
+
+    /**
+     * Optional HMAC of the envelope
+     */
+    MacTransport hmac;
+
+    public MailTransport() {
+
     }
 
-    public void setMessage(FileLink message) {
-        this.message = message;
+    public FileLink getEnvelope() {
+        return envelope;
     }
 
-    public byte[] getHash() {
+    public void setEnvelope(FileLink envelope) {
+        this.envelope = envelope;
+    }
+
+    public DigestTransport getHash() {
         return hash;
     }
 
-    public void setHash(byte[] hash) {
+    public void setHash(DigestTransport hash) {
         this.hash = hash;
     }
 
     public FileLink getSecurity() {
-        return security;
+        return key;
     }
 
     public void setSecurity(FileLink security) {
-        this.security = security;
+        this.key = key;
     }
 }

@@ -13,7 +13,7 @@
             "max": "0",
             "fields": [
                 {
-                    "name": "message",
+                    "name": "envelope",
                     "description":"Holds the symmetric encrypted message, using symmetric encryption",
                     "type": "filelink",
                     "min": "1",
@@ -22,8 +22,8 @@
                     "properties": {}
                 },
                 {
-                    "name": "security",
-                    "description":"Holds the details to unlock the message, using RSA encryption",
+                    "name": "key",
+                    "description":"Holds an encryption transport instance, encrypted with RSA",
                     "type": "filelink",
                     "min": "1",
                     "max": "0",
@@ -31,20 +31,38 @@
                     "properties": {}
                 },
                 {
+                    "name": "generated",
+                    "description":"The date/time the letter was generated, in UTC",
+                    "type": "date",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
                      "name": "hash",
-                     "description":"The optional hash of the message and security values",
-                     "type": "blob",
+                     "description":"The optional hash of the (message + key + date) and security values",
+                     "type": "tag/DigestTransport",
                      "min": "1",
                      "max": "0",
                      "required":"false",
                      "properties": {}
+                },
+                {
+                    "name": "hmac",
+                    "description":"The optional HMAC of the (message + key + date) or hash",
+                    "type": "tag/MacTransport",
+                    "min": "1",
+                    "max": "0",
+                    "required":"false",
+                    "properties": {}
                 }
             ]
         },
 
         {
             "name": "EncryptionTransport",
-            "description": "Used to perform blowfish encryption",
+            "description": "Used to transport encryption details",
             "identity": "100",
             "min": "1",
             "max": "0",
@@ -138,6 +156,62 @@
                   "max": "0",
                   "required":"false",
                   "properties": {}
+                }
+            ]
+        },
+
+        {
+            "name": "DigestTransport",
+            "description": "Used to transfer digest details",
+            "identity": "101",
+            "min": "1",
+            "max": "0",
+            "fields": [
+                {
+                    "name": "digest",
+                    "description":"Holds the key",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                     "name": "algorithm",
+                     "description":"The encryption type",
+                     "type": "enum",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
+                }
+            ]
+        },
+
+        {
+            "name": "MacTransport",
+            "description": "Used to transfer HMAC details",
+            "identity": "102",
+            "min": "1",
+            "max": "0",
+            "fields": [
+                {
+                    "name": "hmac",
+                    "description":"Holds the HMAC",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                     "name": "algorithm",
+                     "description":"The encryption type",
+                     "type": "enum",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
                 }
             ]
         }

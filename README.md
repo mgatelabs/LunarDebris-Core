@@ -23,10 +23,10 @@ The mailbox owner can specify what identiy level is required for messages to be 
 
 *The 256 bit identity number is not controlled by a central source.*
 
-How would clients send you mail?
+How would clients send mail?
 ------------
 
-There are varius ways people could send you messages with different security concerns.
+There are varius ways clients could send messages.  Each option handles different security concerns.
 
 **Open mailbox:**
 You would post details, such as a QR code with your connection details, display name and public key.  This would be prefered for mail messages that are not sensative, but you still want a layer of protection.  People who send messages can also post their return details for two way communication to start.

@@ -13,14 +13,13 @@ Goals
 Flow
 ------------
 
-
 Identity Control
 ------------
 
-Messages will have various ways to disclose the sender's identity.  Identity is based upon a 256 but number (32 bytes), with no other information being disclosed.  A clients identity will be generated when setting up a mailbox, and no central authority will be used to stop collisions.  Clients may have multiple identities and mailboxes.
+Messages will have various ways to disclose the sender's identity.  Identity is based upon a 256 but number (32 bytes), with the possability of no other information being disclosed.  A client's identity will be generated when setting up a mailbox, and no central authority will be used to stop collisions from occuring.  Clients may have multiple identities and mailboxes at the same time.
 
 **Identity options**
-- Anonymous: Don't reveal your identity (Special cases)
+- Anonymous: Identity is not disclosed (Special cases)
 - Envelope ID: A 256 bit number which be sent on the outside of their Envelope (Identity is in the clear)
 - Message ID: A 256 bit number, which will be sent inside your encrypted Envelope.  (The envelope must be opened in order to learn their identity)
 
@@ -35,10 +34,12 @@ Messages sent with this system have various ways to verify their integrity and i
 - HMAC: A special hash, which requires a known shared secret. (Weak identity/validation check)
 - SIGNATURE: Public/Private keys are used with a hash (Proves identity and validation)
 
+Verification uses a cascade system to improve overal reliability.  A client can include an HMAC and Signature with their message.  The HMAC would be calculated by hashing the encrypted content/key and the generated time(If available).  The Singature would also be created by hashing the encrypted content/key, the generated time(If available) and HMAC value.
+
 Envelope Encryption
 ------------
 
-The encryption used on the envelope will be either AES, DES, TripleDES or Blowfish.  The symmetric key plus other fields will be encrypted with the recipients public key.
+The encryption used on the envelope will be either AES, DES, TripleDES or Blowfish.  The symmetric key plus other fields will be encrypted with the recipient's public key.
 
 **Notes**:
 - The symmetric encryption key will be unique for each message.
@@ -51,20 +52,18 @@ Sending messages will not be as simple as the existing e-mail systems.
 
 For example, say you want to send a message to another user you've never communicated with before.  You would either need to meet them in person to exchange private details or find their publicly disclosed details.  Since this contact posted a QR/file code on a webpage, you are able to import their details into your local mail client.  Writing them a message will not be very different, but before sending, you need to specify the identity level you wish to disclose.  Because you want two way communication with them, you will provide the HMAC verification, disclose your identity/connection/public key in the encrypted message.  Once the client confirms sending the message, its content will be package and made ready for sending.  The envelope file will be posted to the remote server which will place it in the correct box.
 
-- The message system is being designed to work in different modes that offer different level of security.
-- There are various ways clients could send messages.  Each option handles different security concerns.
+- The message system is being designed to work in different modes that offer various levels of security.
 
 **Open mailbox:**
-You would post details, such as a QR code with your connection details, display name and public key.  This would be preferred for mail messages that are not sensitive, but you still want a layer of protection.  Clients who send messages can also disclose their return details for two way communication to start.
+You would post online/print a QR code with your connection details, display name and public key.  This would be preferred for mail messages that are not sensitive, but you still want a layer of protection.  Clients who send messages can also disclose their return details for two way communication to start.
 
 - Spam messages, as with current e-mail
 - General/Public communication
 
 **Private mailbox:**
-This would entail you setting up a mail box with different public/private keys from the **open** connection.  The connection details would not be posted to the public.  At this point you would need to physically transfer connection details to clients you wish to send and receive messages from.
+This would entail you setting up a mail box with different public/private keys from any other connection.  The connection details would not be posted to the public and you would need to transfer them securly.
 
 - Business partners
-- Agents
 - Family members
 
 Format Specifications
@@ -73,8 +72,8 @@ Format Specifications
 Envelope Format
 ------------
 
-- Contents: The encrypted message contents (Required, GZIP>Encrypted)
-- Key: The symmetric key used to decrypt the message.  This has been encrypted with the recipients public key. (Required, Key Format > Encrypted)
+- Contents: The encrypted message contents (Required, GZIP &gt; Encrypted)
+- Key: The symmetric key used to decrypt the message.  This has been encrypted with the recipients public key. (Required, Key Format &gt; Encrypted)
 - Generated: The date/time the message was generated in UTC (Optional, Date)
 - HMAC: Hash to verify content has not been altered, requires a large shared secret (Optional, HMAC Format)
 - Signature: Secure hash used to verify sender's identity and integrity (Optional, Signature Format)
@@ -166,7 +165,7 @@ Unlike current mail systems where thread views have been a late addition, each m
 Key Exchanges
 ------------
 
-This format is being designed for individuals to maintain a high level of security and privacy from 3rd party involvement.  So the level of security will be determine by how connection and identity information is exchanged between people.
+This format is being designed for individuals to maintain a high level of security and privacy from 3rd party involvement.  So the level of security will be determined by how connection and identity information is exchanged between clients.
 
 For general or public communication, a clients details can be posted online for other to see and use.  This would work similar to how e-mail is distributed now by telling someone your address, but it will be more complicated.  These connections will leak critical information and should not be trusted for secure conversations.
 
@@ -175,7 +174,7 @@ For general or public communication, a clients details can be posted online for 
 - High chance of being compromised
 - Little trust
 
-For a high security example imagine that you were a whistle blower wanting to disclose information to an journalist.  You would need to meet face to face and exchange communication details in person without involving the internet or networking.  Meeting in person lowers the possibility for 3rd party spying and information leakage.  When the two parties communicate nothing is disclosed about who sent the message since identities will be striped and a simple HMAC check will be used to stop tampering.  The server will also require a basic proof of work and messages must start transferring within 5 minutes of their generation.  *If a 3rd party tried to resend a message with an altered generated time-stamp it would make it through the proof of work filter, but the later HMAC check would disqualify it from being fully accepted*
+For a high security example imagine that you were a whistle blower wanting to disclose information to an journalist.  You would need to meet face to face and exchange communication details in person without involving the internet or networking.  Meeting in person lowers the possibility for 3rd party spying and information leakage.  When the two parties communicate nothing is disclosed about who sent the message since identities will be striped and a simple HMAC check will be used to stop tampering.  The server will also require a basic proof of work and messages must start transferring within 5 minutes of their generation.  *If a 3rd party tried to resend a message with an altered generated time-stamp it would make it through the proof of work filter, but a later HMAC check would disqualify it from being fully accepted*
 
 - Public keys are only known by end points
 - High barrier to send and receive mail

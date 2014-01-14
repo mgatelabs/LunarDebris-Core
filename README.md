@@ -13,6 +13,12 @@ Goals
 Flow
 ------------
 
+
+Java Target
+------------
+
+The code has been optomized for Java 7 and will not work without modification under Java 6.  We could have targetted Java 6, but using that version would be a security risk.
+
 Identity Control
 ------------
 

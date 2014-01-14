@@ -214,6 +214,98 @@
                      "properties": {}
                 }
             ]
+        },
+
+        {
+            "name": "SignatureTransport",
+            "description": "Used to transfer Signature details",
+            "identity": "103",
+            "min": "1",
+            "max": "0",
+            "fields": [
+                {
+                    "name": "identity",
+                    "description":"Holds the sender\'s identity",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                    "name": "signature",
+                    "description":"Holds the signature's bytes",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                     "name": "algorithm",
+                     "description":"The algorithm to used",
+                     "type": "enum",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
+                }
+            ]
+        },
+
+        {
+            "name": "ConnectionTransport",
+            "description": "Used to transfer connection details",
+            "identity": "104",
+            "min": "1",
+            "max": "0",
+            "fields": [
+                {
+                    "name": "host",
+                    "description":"The hosts identity",
+                    "type": "string",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                    "name": "port",
+                    "description":"The port number",
+                    "type": "int",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                     "name": "path",
+                     "description":"The optional path",
+                     "type": "string",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
+                },
+                {
+                  "name": "hmac",
+                  "description":"The hmac shared secret",
+                  "type": "blob",
+                  "min": "1",
+                  "max": "0",
+                  "required":"false",
+                  "properties": {}
+                },
+                {
+                    "name": "acceptance",
+                    "description":"The minimal security required",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                }
+            ]
         }
 
     ]

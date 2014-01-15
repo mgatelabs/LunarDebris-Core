@@ -1,6 +1,7 @@
 package com.mgatelabs.lunardebris.support.tags;
 
-import com.mgatelabs.lunardebris.support.enums.ConnectionAcceptanceTypes;
+import com.mgatelabs.lunardebris.support.enums.ConnectionIdentityTypes;
+import com.mgatelabs.lunardebris.support.enums.ConnectionVerificationTypes;
 
 /**
  * Created by MiniMegaton on 1/12/14.
@@ -11,7 +12,8 @@ public class ConnectionTransport {
     private int port;
     private String path;
     private byte [] hmac;
-    private ConnectionAcceptanceTypes acceptance;
+    private ConnectionVerificationTypes verification;
+    private ConnectionIdentityTypes identity;
 
     public ConnectionTransport() {
     }
@@ -48,11 +50,19 @@ public class ConnectionTransport {
         this.hmac = hmac;
     }
 
-    public ConnectionAcceptanceTypes getAcceptance() {
-        return acceptance;
+    public ConnectionVerificationTypes getVerification() {
+        return verification;
     }
 
-    public void setAcceptance(ConnectionAcceptanceTypes acceptance) {
-        this.acceptance = acceptance;
+    public void setVerification(ConnectionVerificationTypes verification) {
+        this.verification = verification;
+    }
+
+    public ConnectionIdentityTypes getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(ConnectionIdentityTypes identity) {
+        this.identity = identity;
     }
 }

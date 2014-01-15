@@ -20,6 +20,16 @@ public class MailTransport {
     FileLink key;
 
     /**
+     * The sender's open identity
+     */
+    IdentityTransport openIdentity;
+
+    /**
+     * The sender's encrypted identity, gzip + encrypted with the key
+     */
+    FileLink encryptedIdentity;
+
+    /**
      * The required date that it was generated on in UTC
      */
     Date generated;
@@ -33,6 +43,11 @@ public class MailTransport {
      * Optional HMAC of the envelope
      */
     MacTransport hmac;
+
+    /**
+     * Optional Signature of the envelope
+     */
+    SignatureTransport signature;
 
     public MailTransport() {
 
@@ -60,5 +75,53 @@ public class MailTransport {
 
     public void setSecurity(FileLink security) {
         this.key = key;
+    }
+
+    public FileLink getKey() {
+        return key;
+    }
+
+    public void setKey(FileLink key) {
+        this.key = key;
+    }
+
+    public IdentityTransport getOpenIdentity() {
+        return openIdentity;
+    }
+
+    public void setOpenIdentity(IdentityTransport openIdentity) {
+        this.openIdentity = openIdentity;
+    }
+
+    public FileLink getEncryptedIdentity() {
+        return encryptedIdentity;
+    }
+
+    public void setEncryptedIdentity(FileLink encryptedIdentity) {
+        this.encryptedIdentity = encryptedIdentity;
+    }
+
+    public Date getGenerated() {
+        return generated;
+    }
+
+    public void setGenerated(Date generated) {
+        this.generated = generated;
+    }
+
+    public MacTransport getHmac() {
+        return hmac;
+    }
+
+    public void setHmac(MacTransport hmac) {
+        this.hmac = hmac;
+    }
+
+    public SignatureTransport getSignature() {
+        return signature;
+    }
+
+    public void setSignature(SignatureTransport signature) {
+        this.signature = signature;
     }
 }

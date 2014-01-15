@@ -31,6 +31,24 @@
                     "properties": {}
                 },
                 {
+                    "name": "openIdentity",
+                    "description":"Holds an open identity transport instance, encrypted with key",
+                    "type": "tag/IdentityTransport",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                    "name": "encryptedIdentity",
+                    "description":"Holds an encrypted identity transport instance, encrypted with key",
+                    "type": "filelink",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
                     "name": "generated",
                     "description":"The date/time the letter was generated, in UTC",
                     "type": "date",
@@ -56,6 +74,15 @@
                     "max": "0",
                     "required":"false",
                     "properties": {}
+                },
+                {
+                 "name": "signature",
+                 "description":"The optional Signature of the (message + key + date) or hash",
+                 "type": "tag/SignatureTransport",
+                 "min": "1",
+                 "max": "0",
+                 "required":"false",
+                 "properties": {}
                 }
             ]
         },
@@ -297,16 +324,147 @@
                   "properties": {}
                 },
                 {
-                    "name": "acceptance",
-                    "description":"The minimal security required",
+                    "name": "verification",
+                    "description":"The minimal verification required",
                     "type": "blob",
                     "min": "1",
                     "max": "0",
                     "required":"true",
                     "properties": {}
+                },
+                {
+                     "name": "identity",
+                     "description":"The minimal identification required",
+                     "type": "blob",
+                     "min": "1",
+                     "max": "0",
+                     "required":"true",
+                     "properties": {}
                 }
             ]
-        }
+        },
+
+        {
+            "name": "IdentityTransport",
+            "description": "Used to transfer identity details",
+            "identity": "105",
+            "min": "1",
+            "max": "0",
+            "fields": [
+                {
+                    "name": "identity",
+                    "description":"Holds the sender\'s identity",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                    "name": "key",
+                    "description":"Holds the sender\'s public key",
+                    "type": "tag/EncryptionTransport",
+                    "min": "1",
+                    "max": "0",
+                    "required":"false",
+                    "properties": {}
+                },
+                {
+                     "name": "address",
+                     "description":"How to reach the sender",
+                     "type": "tag/ConnectionTransport",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
+                }
+            ]
+        },
+
+        {
+            "name": "EncryptedIdentityTransport",
+            "description": "Used to transfer identity details with extra noise to change how it looks every time",
+            "identity": "106",
+            "min": "1",
+            "max": "0",
+            "fields": [
+                {
+                    "name": "-",
+                    "description":"Noise 1",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {
+                        "min":"5",
+                        "max":"10",
+                    }
+                },
+                {
+                    "name": "identity",
+                    "description":"Holds the sender\'s identity",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                    "name": "-",
+                    "description":"Noise 1",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {
+                        "min":"5",
+                        "max":"15",
+                    }
+                },
+                {
+                    "name": "key",
+                    "description":"Holds the sender\'s public key",
+                    "type": "tag/EncryptionTransport",
+                    "min": "1",
+                    "max": "0",
+                    "required":"false",
+                    "properties": {}
+                },
+                {
+                    "name": "-",
+                    "description":"Noise 1",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {
+                        "min":"5",
+                        "max":"15",
+                    }
+                },
+                {
+                     "name": "address",
+                     "description":"How to reach the sender",
+                     "type": "tag/ConnectionTransport",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
+                },
+                {
+                    "name": "-",
+                    "description":"Noise 1",
+                    "type": "blob",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {
+                        "min":"5",
+                        "max":"10",
+                    }
+                }
+            ]
+        },
 
     ]
 }

@@ -12,32 +12,27 @@ public class MailTransport {
     /**
      * The envelope content, gzip + symmetric encrypted (BLOWFISH, AES, DES, DESede...)
      */
-    FileLink envelope;
-
-    /**
-     * The security details, which have been gzip + RSA Encrypted
-     */
-    FileLink key;
+    private FileLink envelope;
 
     /**
      * The sender's open identity
      */
-    IdentityTransport openIdentity;
+    private FileLink identity;
 
     /**
-     * The sender's encrypted identity, gzip + encrypted with the key
+     * The security details, which have been gzip + RSA Encrypted
      */
-    FileLink encryptedIdentity;
+    private FileLink key;
 
     /**
      * The required date that it was generated on in UTC
      */
-    Date generated;
+    private Date generated;
 
     /**
      * Optional hash of the envelope
      */
-    DigestTransport hash;
+    private DigestTransport hash;
 
     /**
      * Optional HMAC of the envelope
@@ -85,20 +80,12 @@ public class MailTransport {
         this.key = key;
     }
 
-    public IdentityTransport getOpenIdentity() {
-        return openIdentity;
+    public FileLink getIdentity() {
+        return identity;
     }
 
-    public void setOpenIdentity(IdentityTransport openIdentity) {
-        this.openIdentity = openIdentity;
-    }
-
-    public FileLink getEncryptedIdentity() {
-        return encryptedIdentity;
-    }
-
-    public void setEncryptedIdentity(FileLink encryptedIdentity) {
-        this.encryptedIdentity = encryptedIdentity;
+    public void setIdentity(FileLink identity) {
+        this.identity = identity;
     }
 
     public Date getGenerated() {

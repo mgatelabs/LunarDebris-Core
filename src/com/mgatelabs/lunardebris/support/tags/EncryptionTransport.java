@@ -1,13 +1,11 @@
 package com.mgatelabs.lunardebris.support.tags;
 
-import com.mgatelabs.lunardebris.support.enums.EncryptionModes;
-import com.mgatelabs.lunardebris.support.enums.EncryptionPaddingSchemes;
-import com.mgatelabs.lunardebris.support.enums.EncryptionAlgorithms;
-import com.mgatelabs.lunardebris.support.enums.EncryptionKeyTypes;
+import com.mgatelabs.lunardebris.support.enums.*;
 import com.mgatelabs.lunardebris.util.LunarSupport;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayOutputStream;
@@ -20,6 +18,8 @@ import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Created by MiniMegaton on 1/5/14.
@@ -29,10 +29,11 @@ public class EncryptionTransport {
     EncryptionAlgorithms algorithm;
     EncryptionModes mode;
     EncryptionPaddingSchemes padding;
-    private byte [] key;
+    EncryptionCompression compression;
+    private byte[] key;
     private String format;
     private int keySize;
-    private byte [] iv;
+    private byte[] iv;
     private Date start;
     private Date expire;
 
@@ -49,6 +50,7 @@ public class EncryptionTransport {
         this.algorithm = algorithm;
         this.mode = mode;
         this.padding = padding;
+        compression = EncryptionCompression.NONE;
     }
 
     // Instance grabbers
@@ -61,7 +63,7 @@ public class EncryptionTransport {
         return new EncryptionTransport(EncryptionKeyTypes.PUB, k.getEncoded(), keySize, k.getFormat(), null, EncryptionAlgorithms.valueOf(k.getAlgorithm()), EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5);
     }
 
-    public static EncryptionTransport from(Key k, int keySize, byte [] iv) {
+    public static EncryptionTransport from(Key k, int keySize, byte[] iv) {
         return new EncryptionTransport(EncryptionKeyTypes.SYM, k.getEncoded(), keySize, k.getFormat(), iv, EncryptionAlgorithms.valueOf(k.getAlgorithm()), EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5);
     }
 
@@ -131,6 +133,14 @@ public class EncryptionTransport {
         this.padding = padding;
     }
 
+    public EncryptionCompression getCompression() {
+        return compression;
+    }
+
+    public void setCompression(EncryptionCompression compression) {
+        this.compression = compression;
+    }
+
     public Date getStart() {
         return start;
     }
@@ -185,10 +195,10 @@ public class EncryptionTransport {
 
     public IvParameterSpec getIvParmSpec() throws Exception {
         if (iv == null) {
-            int size =algorithm.getIV(keySize);
-            byte [] bytes = new byte [size];
+            int size = algorithm.getIV(keySize);
+            byte[] bytes = new byte[size];
             for (int i = 0; i < size; i++) {
-                bytes[i] = (byte)i;
+                bytes[i] = (byte) i;
             }
             return new IvParameterSpec(bytes);
         } else {
@@ -201,7 +211,8 @@ public class EncryptionTransport {
         switch (algorithm) {
             case RSA: {
                 cipher.init(Cipher.ENCRYPT_MODE, getKeySpec());
-            } break;
+            }
+            break;
             default: {
                 cipher.init(Cipher.ENCRYPT_MODE, getKeySpec(), getIvParmSpec());
             }
@@ -214,7 +225,8 @@ public class EncryptionTransport {
         switch (algorithm) {
             case RSA: {
                 cipher.init(Cipher.DECRYPT_MODE, getKeySpec());
-            } break;
+            }
+            break;
             default: {
                 cipher.init(Cipher.DECRYPT_MODE, getKeySpec(), getIvParmSpec());
             }
@@ -223,23 +235,33 @@ public class EncryptionTransport {
     }
 
     public void encrypt(InputStream is, OutputStream os) throws Exception {
-        crypt(getEncryptCipher(), is, os);
+        crypt(getEncryptCipher(), is, os, true);
     }
 
     public void decrypt(InputStream is, OutputStream os) throws Exception {
-        crypt(getDecryptCipher(), is, os);
+        crypt(getDecryptCipher(), is, os, false);
     }
 
-    private void crypt(Cipher cipher, InputStream is, OutputStream os) throws Exception {
+    private void crypt(Cipher cipher, InputStream is, OutputStream os, boolean encrypt) throws Exception {
         // RSA does not require this step, but it will show an error
+        // RSA can't use encryption
         if (algorithm.isDoFinal()) {
             ByteArrayOutputStream toBytes = new ByteArrayOutputStream(1024);
             LunarSupport.copyStream(is, toBytes);
-            byte [] result = cipher.doFinal(toBytes.toByteArray());
+            byte[] result = cipher.doFinal(toBytes.toByteArray());
             os.write(result);
         } else {
-            CipherInputStream cis = new CipherInputStream(is, cipher);
-            LunarSupport.copyStream(cis, os);
+            CipherInputStream cis;
+            if (compression == EncryptionCompression.GZIP) {
+                if (encrypt) {
+                    LunarSupport.copyStream(is, new GZIPOutputStream(new CipherOutputStream(os, cipher)));
+                } else {
+                    LunarSupport.copyStream(new GZIPInputStream(new CipherInputStream(is, cipher)), os);
+                }
+            } else {
+                cis = new CipherInputStream(is, cipher);
+                LunarSupport.copyStream(cis, os);
+            }
         }
     }
 }

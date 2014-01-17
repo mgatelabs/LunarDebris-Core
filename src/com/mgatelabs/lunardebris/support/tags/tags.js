@@ -7,82 +7,78 @@
 
         {
             "name": "MailTransport",
-            "description": "Used to send messages to and from servers",
+            "description": "Used to transfer mail between clients",
             "identity": "1",
             "min": "1",
             "max": "0",
             "fields": [
                 {
                     "name": "envelope",
-                    "description":"Holds the symmetric encrypted message, using symmetric encryption",
+                    "description":"The encrypted message",
                     "type": "filelink",
                     "min": "1",
                     "max": "0",
                     "required":"true",
-                    "properties": {}
+                    "properties": {
+
+                    }
                 },
                 {
-                    "name": "key",
-                    "description":"Holds an encryption transport instance, encrypted with RSA",
+                    "name": "identity",
+                    "description":"The sender's encrypted identity",
                     "type": "filelink",
-                    "min": "1",
-                    "max": "0",
-                    "required":"true",
-                    "properties": {}
-                },
-                {
-                    "name": "openIdentity",
-                    "description":"Holds an open identity transport instance, encrypted with key",
-                    "type": "tag/IdentityTransport",
-                    "min": "1",
-                    "max": "0",
-                    "required":"true",
-                    "properties": {}
-                },
-                {
-                    "name": "encryptedIdentity",
-                    "description":"Holds an encrypted identity transport instance, encrypted with key",
-                    "type": "filelink",
-                    "min": "1",
-                    "max": "0",
-                    "required":"true",
-                    "properties": {}
-                },
-                {
-                    "name": "generated",
-                    "description":"The date/time the letter was generated, in UTC",
-                    "type": "date",
-                    "min": "1",
-                    "max": "0",
-                    "required":"true",
-                    "properties": {}
-                },
-                {
-                     "name": "hash",
-                     "description":"The optional hash of the (message + key + date) and security values",
-                     "type": "tag/DigestTransport",
-                     "min": "1",
-                     "max": "0",
-                     "required":"false",
-                     "properties": {}
-                },
-                {
-                    "name": "hmac",
-                    "description":"The optional HMAC of the (message + key + date) or hash",
-                    "type": "tag/MacTransport",
                     "min": "1",
                     "max": "0",
                     "required":"false",
                     "properties": {}
                 },
                 {
-                 "name": "signature",
-                 "description":"The optional Signature of the (message + key + date) or hash",
-                 "type": "tag/SignatureTransport",
-                 "min": "1",
-                 "max": "0",
-                 "required":"false",
-                 "properties": {}
+                    "name": "key",
+                    "description":"The encrypted key",
+                    "type": "filelink",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {
+                    }
+                },
+                {
+                    "name": "generated",
+                    "description":"The date/time the message was generated",
+                    "type": "date",
+                    "min": "1",
+                    "max": "0",
+                    "required":"false",
+                    "properties": {}
+                },
+                {
+                    "name": "hash",
+                    "description":"A simple hash",
+                    "type": "tag/DigestTransport",
+                    "min": "1",
+                    "max": "0",
+                    "required":"false",
+                    "properties": {
+                    }
+                },
+                {
+                     "name": "hmac",
+                     "description":"A better hash",
+                     "type": "tag/MacTransport",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
+                },
+                {
+                    "name": "signature",
+                    "description":"Secure hash",
+                    "type": "tag/SignatureTransport",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {
+                    }
                 }
             ]
         },
@@ -160,6 +156,15 @@
                 {
                     "name": "padding",
                     "description":"The encryption padding scheme",
+                    "type": "enum",
+                    "min": "1",
+                    "max": "0",
+                    "required":"false",
+                    "properties": {}
+                },
+                {
+                    "name": "compression",
+                    "description":"The pre/post encryption compression",
                     "type": "enum",
                     "min": "1",
                     "max": "0",
@@ -252,7 +257,7 @@
             "fields": [
                 {
                     "name": "identity",
-                    "description":"Holds the sender\'s identity",
+                    "description":"Holds the sender's identity",
                     "type": "blob",
                     "min": "1",
                     "max": "0",
@@ -346,44 +351,7 @@
 
         {
             "name": "IdentityTransport",
-            "description": "Used to transfer identity details",
-            "identity": "105",
-            "min": "1",
-            "max": "0",
-            "fields": [
-                {
-                    "name": "identity",
-                    "description":"Holds the sender\'s identity",
-                    "type": "blob",
-                    "min": "1",
-                    "max": "0",
-                    "required":"true",
-                    "properties": {}
-                },
-                {
-                    "name": "key",
-                    "description":"Holds the sender\'s public key",
-                    "type": "tag/EncryptionTransport",
-                    "min": "1",
-                    "max": "0",
-                    "required":"false",
-                    "properties": {}
-                },
-                {
-                     "name": "address",
-                     "description":"How to reach the sender",
-                     "type": "tag/ConnectionTransport",
-                     "min": "1",
-                     "max": "0",
-                     "required":"false",
-                     "properties": {}
-                }
-            ]
-        },
-
-        {
-            "name": "EncryptedIdentityTransport",
-            "description": "Used to transfer identity details with extra noise to change how it looks every time",
+            "description": "Used to transfer identity details with extra noise to change how it encrypts looks every time",
             "identity": "106",
             "min": "1",
             "max": "0",
@@ -397,12 +365,12 @@
                     "required":"true",
                     "properties": {
                         "min":"5",
-                        "max":"10",
+                        "max":"18"
                     }
                 },
                 {
                     "name": "identity",
-                    "description":"Holds the sender\'s identity",
+                    "description":"Holds the sender's identity",
                     "type": "blob",
                     "min": "1",
                     "max": "0",
@@ -418,12 +386,12 @@
                     "required":"true",
                     "properties": {
                         "min":"5",
-                        "max":"15",
+                        "max":"15"
                     }
                 },
                 {
                     "name": "key",
-                    "description":"Holds the sender\'s public key",
+                    "description":"Holds the sender's public key",
                     "type": "tag/EncryptionTransport",
                     "min": "1",
                     "max": "0",
@@ -439,7 +407,7 @@
                     "required":"true",
                     "properties": {
                         "min":"5",
-                        "max":"15",
+                        "max":"15"
                     }
                 },
                 {
@@ -460,11 +428,10 @@
                     "required":"true",
                     "properties": {
                         "min":"5",
-                        "max":"10",
+                        "max":"19"
                     }
                 }
             ]
-        },
-
+        }
     ]
 }

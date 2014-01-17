@@ -3,10 +3,7 @@ package com.mgatelabs.lunardebris.support.tags;
 import com.mgatelabs.bytemapper.support.io.FormatIO;
 import com.mgatelabs.bytemapper.util.BMResult;
 import com.mgatelabs.bytemapper.util.loaders.SimpleFormatLoader;
-import com.mgatelabs.lunardebris.support.enums.EncryptionAlgorithms;
-import com.mgatelabs.lunardebris.support.enums.EncryptionKeyTypes;
-import com.mgatelabs.lunardebris.support.enums.EncryptionModes;
-import com.mgatelabs.lunardebris.support.enums.EncryptionPaddingSchemes;
+import com.mgatelabs.lunardebris.support.enums.*;
 import com.mgatelabs.lunardebris.util.EncryptionUtils;
 import com.mgatelabs.lunardebris.util.LunarSupport;
 import junit.framework.TestCase;
@@ -27,6 +24,14 @@ public class EncryptionTransportTest extends TestCase {
         tryEncryption(et);
     }
 
+    public void testGZIPBlowfishEncryption() throws Exception {
+        EncryptionTransport et = EncryptionUtils.generateSymmetricEncryption(LunarSupport.getSecureRandom(), EncryptionAlgorithms.BLOWFISH, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5, EncryptionAlgorithms.BLOWFISH.getMinKeySize());
+        et.setCompression(EncryptionCompression.GZIP);
+        tryEncryption(et);
+        et.setCompression(EncryptionCompression.NONE);
+        tryEncryption(et);
+    }
+
     public void testAESEncryption() throws Exception {
         EncryptionTransport et = EncryptionUtils.generateSymmetricEncryption(LunarSupport.getSecureRandom(), EncryptionAlgorithms.AES, EncryptionModes.CBC, EncryptionPaddingSchemes.PKCS5, EncryptionAlgorithms.AES.getMinKeySize());
         tryEncryption(et);
@@ -43,9 +48,9 @@ public class EncryptionTransportTest extends TestCase {
     }
 
     public void tryEncryption(EncryptionTransport et) throws Exception {
-        byte [] sampleData = new byte [256];
-        for (int i = 0; i < 256; i++) {
-            sampleData[i] = (byte) i;
+        byte [] sampleData = new byte [1024];
+        for (int i = 0; i < sampleData.length; i++) {
+            sampleData[i] = (byte) (i % 16);
         }
 
         ByteArrayInputStream encodeInputStream = new ByteArrayInputStream(sampleData);
@@ -62,7 +67,7 @@ public class EncryptionTransportTest extends TestCase {
 
         assertEquals(sampleData.length, decodedData.length);
 
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < sampleData.length; i++) {
             assertEquals(sampleData[i], decodedData[i]);
         }
     }

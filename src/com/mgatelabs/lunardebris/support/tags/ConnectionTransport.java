@@ -11,7 +11,7 @@ public class ConnectionTransport {
     private String host;
     private int port;
     private String path;
-    private byte [] hmac;
+    private byte[] hmac;
     private ConnectionVerificationTypes verification;
     private ConnectionIdentityTypes identity;
 

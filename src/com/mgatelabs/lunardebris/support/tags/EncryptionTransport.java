@@ -259,8 +259,7 @@ public class EncryptionTransport {
                     LunarSupport.copyStream(new GZIPInputStream(new CipherInputStream(is, cipher)), os);
                 }
             } else {
-                cis = new CipherInputStream(is, cipher);
-                LunarSupport.copyStream(cis, os);
+                LunarSupport.copyStream(new CipherInputStream(is, cipher), os);
             }
         }
     }

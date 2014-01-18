@@ -53,5 +53,4 @@ public class EncryptionUtils {
 
         return new EncryptionTransport(EncryptionKeyTypes.SYM, secKey.getEncoded(), keySize, secKey.getFormat(), iv, algorithm, mode, padding);
     }
-
 }

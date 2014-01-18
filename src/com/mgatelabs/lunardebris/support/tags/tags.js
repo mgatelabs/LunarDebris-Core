@@ -6,7 +6,7 @@
     "tags": [
 
         {
-            "name": "MailTransport",
+            "name": "EnvelopeTransport",
             "description": "Used to transfer mail between clients",
             "identity": "1",
             "min": "1",
@@ -229,7 +229,7 @@
             "fields": [
                 {
                     "name": "hmac",
-                    "description":"Holds the HMAC",
+                    "description":"Holds the HMAC to verify against",
                     "type": "blob",
                     "min": "1",
                     "max": "0",
@@ -256,17 +256,8 @@
             "max": "0",
             "fields": [
                 {
-                    "name": "identity",
-                    "description":"Holds the sender's identity",
-                    "type": "blob",
-                    "min": "1",
-                    "max": "0",
-                    "required":"true",
-                    "properties": {}
-                },
-                {
                     "name": "signature",
-                    "description":"Holds the signature's bytes",
+                    "description":"Holds the signature to verify against",
                     "type": "blob",
                     "min": "1",
                     "max": "0",
@@ -275,7 +266,7 @@
                 },
                 {
                      "name": "algorithm",
-                     "description":"The algorithm to used",
+                     "description":"The algorithm used to create the signature",
                      "type": "enum",
                      "min": "1",
                      "max": "0",
@@ -294,7 +285,7 @@
             "fields": [
                 {
                     "name": "host",
-                    "description":"The hosts identity",
+                    "description":"The host",
                     "type": "string",
                     "min": "1",
                     "max": "0",
@@ -321,7 +312,7 @@
                 },
                 {
                   "name": "hmac",
-                  "description":"The hmac shared secret",
+                  "description":"The shared secret for HMAC verification",
                   "type": "blob",
                   "min": "1",
                   "max": "0",
@@ -379,7 +370,7 @@
                 },
                 {
                     "name": "-",
-                    "description":"Noise 1",
+                    "description":"Noise 2",
                     "type": "blob",
                     "min": "1",
                     "max": "0",
@@ -400,7 +391,7 @@
                 },
                 {
                     "name": "-",
-                    "description":"Noise 1",
+                    "description":"Noise 3",
                     "type": "blob",
                     "min": "1",
                     "max": "0",
@@ -421,7 +412,7 @@
                 },
                 {
                     "name": "-",
-                    "description":"Noise 1",
+                    "description":"Noise 4",
                     "type": "blob",
                     "min": "1",
                     "max": "0",
@@ -432,6 +423,47 @@
                     }
                 }
             ]
+        },
+
+        {
+            "name": "FileTransport",
+            "description": "Used to transfer files",
+            "identity": "103",
+            "min": "1",
+            "max": "0",
+            "fields": [
+                {
+                    "name": "filename",
+                    "description":"The filename",
+                    "type": "string",
+                    "min": "1",
+                    "max": "0",
+                    "required":"true",
+                    "properties": {}
+                },
+                {
+                     "name": "mimetype",
+                     "description":"The files type",
+                     "type": "string",
+                     "min": "1",
+                     "max": "0",
+                     "required":"false",
+                     "properties": {}
+                },
+                 {
+                      "name": "content",
+                      "description":"The files content",
+                      "type": "filelink",
+                      "min": "1",
+                      "max": "0",
+                      "required":"false",
+                      "properties": {
+                        "compression":"true"
+                      }
+                 }
+            ]
         }
+
+
     ]
 }

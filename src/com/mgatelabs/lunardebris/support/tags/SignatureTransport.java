@@ -4,26 +4,20 @@ import com.mgatelabs.lunardebris.support.enums.SignatureAlgorithms;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.security.*;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.Signature;
 
 /**
  * Created by MiniMegaton on 1/9/14.
  */
 public class SignatureTransport {
 
-    private byte [] identity;
     private byte [] signature;
     private SignatureAlgorithms algorithm;
 
     public SignatureTransport() {
-    }
-
-    public byte[] getIdentity() {
-        return identity;
-    }
-
-    public void setIdentity(byte[] identity) {
-        this.identity = identity;
     }
 
     public byte[] getSignature() {
@@ -52,12 +46,19 @@ public class SignatureTransport {
         sign(random, key, streams);
     }
 
+    /**
+     * This is used to create a signature for a user with their private key
+     * @param random
+     * @param key
+     * @param streams
+     * @throws Exception
+     */
     public void sign(SecureRandom random, PrivateKey key, InputStream ... streams) throws Exception{
         Signature signature = Signature.getInstance(algorithm.getAlgorithm());
         signature.initSign(key, random);
         for (InputStream is: streams) {
             byte[] dataBytes = new byte[1024];
-            int count = 0;
+            int count;
             while ((count = is.read(dataBytes)) != -1) {
                 signature.update(dataBytes, 0, count);
             };
@@ -80,7 +81,7 @@ public class SignatureTransport {
         signature.initVerify(key);
         for (InputStream is: streams) {
             byte[] dataBytes = new byte[1024];
-            int count = 0;
+            int count;
             while ((count = is.read(dataBytes)) != -1) {
                 signature.update(dataBytes, 0, count);
             };

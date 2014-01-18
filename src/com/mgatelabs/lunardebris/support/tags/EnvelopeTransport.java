@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by MiniMegaton on 1/4/14.
  */
-public class MailTransport {
+public class EnvelopeTransport {
 
     /**
      * The envelope content, gzip + symmetric encrypted (BLOWFISH, AES, DES, DESede...)
@@ -44,7 +44,7 @@ public class MailTransport {
      */
     SignatureTransport signature;
 
-    public MailTransport() {
+    public EnvelopeTransport() {
 
     }
 

@@ -6,8 +6,8 @@ This tag is designed to transport a sender's identity.
 
 ## Tag Information
 
-*Identity Number*: 106
-*Includes Noise*: Yes
+- *Identity Number*: 106
+- *Includes Noise*: Yes
 
 ## Fields
 

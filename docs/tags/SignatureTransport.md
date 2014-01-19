@@ -6,7 +6,8 @@ This tag is designed to transport an RSA based signature.  Signatures are simila
 
 ## Tag Information
 
-*Identity Number*: 103
+- *Identity Number*: 103
+- *Includes Noise*: No
 
 ## Fields
 

@@ -428,7 +428,7 @@
         {
             "name": "FileTransport",
             "description": "Used to transfer files",
-            "identity": "103",
+            "identity": "107",
             "min": "1",
             "max": "0",
             "fields": [

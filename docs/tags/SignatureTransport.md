@@ -4,6 +4,10 @@
 
 This tag is designed to transport an RSA based signature.  Signatures are similar to HMACs, since they both verify that content hasn't been altered, but provides more protection from tampering, since it also verifies the identity of the sender.
 
+## Tag Information
+
+*Identity Number*: 103
+
 ## Fields
 
 ### signature (required, byte \[\])

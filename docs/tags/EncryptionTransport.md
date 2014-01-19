@@ -6,7 +6,8 @@ This tag is designed to transport encryption details.  This related class can be
 
 ## Tag Information
 
-*Identity Number*: 100
+- *Identity Number*: 100
+- *Includes Noise*: No
 
 ## Fields
 

@@ -1,26 +1,45 @@
 LunarDebris-Core
 ================
 
-Lunar Debris is a library of classes, which will be used to securly transport messages over the internet.  The main goal of this project is to remove 3rd parties which are currently infused into the standard mail lifecycle.  This project will not attempt to interface with the existing mail systems. 
+Lunar Debris is a library of classes, which will be used to securely transport messages over the internet.  The main goal of this project is to remove 3rd parties which are currently infused into the standard mail life cycle.  This project will not attempt to interface with the existing mail systems. 
 
-Goals
-------------
+## Goals
 
-- Messages are only readable by the intended recipetent
-- Sender Identity & Verification are optional (For anonymous, non-verifiable messaging)
+- Messages are only readable by the intended recipient
+  - Use strong encryption
+  - Limit leaks
+- Sender Identity & Verification are optional
+  - For sending anonymous and possibly non-verifiable messages
 - Low file format overhead
+  - This system uses ByteMapper to create tiny binary files.
 
-Flow
-------------
+## Philosophy
 
+### Extremely limited 3rd party involvement
 
-Java Target
-------------
+- The clients of the system have fully control over their security and identity.
+  - When sending messages a client can determine the level of trust they would like to establish with their recipient.  They can exclude or include certain features used to verify their identity or message authenticity.
+- Client's can create and publish their own public/private keys without requiring a 3rd party.
+  - The client has the responsibility to create their own public and private keys.  The software will provide options to quickly generate a key, but we will nto force them to use it.
+- There is no central authority to guarantee a client's identity number has been taken.
+  - Client's can choose their own random number based upon a digest, manual entry, or random noise.
+- Multiple mailboxes
+  - Unlike current mail systems, one person may have multiple and distinct identities.  Each mailbox can have it's own identity number and public/private keys.  They way clients can create mailboxes for special purposes and filter their messages.  For example client's could have a public identity which has been posted to a website, and separate private identities for work and family.
+- There is no centralized way to search for communication details.
+  - You simply can't try to spam mail boxes by trying to send to "a, aa, aaa, aaa,..." since their communication details will be very complex and different.  Sending messages will require knowing the correct path, port and host to transmit to, and possibly solving a simple hash.
+- Limiting spam
+  - Spammers are going to have a fun time trying to send messages, since server's could setup a proof of work sequence for posting messages.  This method will require clients to solve a hashing problem, similar to BitCoin in order to send messages.
+- The clients are responsible for posting how to communicate with them.
+  - For stealth needs clients can directly communicate details in person.
+  - For public needs, such as a website contact form, a QR code or file can be posted online with connection details.
 
-The code has been optomized for Java 7 and will not work without modification under Java 6.  We could have targetted Java 6, but using that version would be a security risk.
+## Flow
 
-Identity Control
-------------
+## Java Target
+
+The code has been optomized for Java 7 and will not work without further modification under Java 6.  We could have targetted Java 6 and still gotten the same result, but using an unsupported Java version would be a security risk.
+
+## Identity Control
 
 Messages will have various ways to disclose the sender's identity.  Identity is based upon a 256 but number (32 bytes), with the possability of no other information being disclosed.  A client's identity will be generated when setting up a mailbox, and no central authority will be used to stop collisions from occuring.  Clients may have multiple identities and mailboxes at the same time.
 
@@ -31,8 +50,7 @@ Messages will have various ways to disclose the sender's identity.  Identity is 
 
 The mailbox owner can specify what identity level is required for messages to be received.
 
-Verification Control
-------------
+## Verification Control
 
 Messages sent with this system have various ways to verify their integrity and identity.
 
@@ -42,8 +60,7 @@ Messages sent with this system have various ways to verify their integrity and i
 
 Verification uses a cascade system to improve overal reliability.  A client can include an HMAC and Signature with their message.  The HMAC would be calculated by hashing the encrypted content/key and the generated time(If available).  The Singature would also be created by hashing the encrypted content/key, the generated time(If available) and HMAC value.
 
-Envelope Encryption
-------------
+## Envelope Encryption
 
 The encryption used on the envelope will be either AES, DES, TripleDES or Blowfish.  The symmetric key plus other fields will be encrypted with the recipient's public key.
 
@@ -51,8 +68,7 @@ The encryption used on the envelope will be either AES, DES, TripleDES or Blowfi
 - The symmetric encryption key will be unique for each message.
 - The decrypted key will provide additional information, such as the encryption scheme used, and when it expires.
 
-How would clients send mail?
-------------
+## How would clients send mail?
 
 Sending messages will not be as simple as the existing e-mail systems.
 
@@ -72,82 +88,6 @@ This would entail you setting up a mail box with different public/private keys f
 - Business partners
 - Family members
 
-Format Specifications
-================
-
-Envelope Format
-------------
-
-- Contents: The encrypted message contents (Required, GZIP &gt; Encrypted)
-- Key: The symmetric key used to decrypt the message.  This has been encrypted with the recipients public key. (Required, Key Format &gt; Encrypted)
-- Generated: The date/time the message was generated in UTC (Optional, Date)
-- HMAC: Hash to verify content has not been altered, requires a large shared secret (Optional, HMAC Format)
-- Signature: Secure hash used to verify sender's identity and integrity (Optional, Signature Format)
-
-HMAC Format
-------------
-
-- hmac: The bytes to verify against (Required, bytes)
-- algorithm: The algorithm used (Required, UTF-8 String)
-
-Signature Format
-------------
-
-- identity: The sender's 256 bit number, if not sent, the envelope will need to be opened first to find out their identity (Optional, bytes)
-- signature: The bytes to verify against (Required, bytes)
-- algorithm: The algorithm used (Required, UTF-8 String)
-
-Message Format
-------------
-
-- Pre Junk: Random bytes posted on the front to alter a the message's length (Optional, bytes)
-- Message identity: 256 bit number unique to this message (Required, bytes)
-- Related identity: 256 bit number of another message, used for threading (Optional, bytes)
-- Generated: The date/time the message was generated in UTC (Optional, Date)
-- Subject: The tagline for the message (Optional, UTF-8 String)
-- Identity: Identity information (Optional, Identity Format)
-- Files: A list of files (Required, List of File Format)
-- Post Junk: Random bytes posted on the front to alter the message's length (Optional, bytes)
-
-Identity Format
-------------
-
-- id: 256 bit number (Required, bytes)
-- key: The public key (Optional, Key Format)
-- connection: How to reach them (Optional, Connection Format)
-
-Key Format
-------------
-
-- type: The key type (Required, ENUM)
-- algorithm: The algorithms name (Required, ENUM)
-- mode: The algorithms mode (Required, ENUM)
-- padding: The algorithms padding scheme (Required, ENUM)
-- key: The key's bytes (Required, bytes)
-- format: How is the key formatted? (Required, UTF-8 String)
-- keySize: The size in bits for the key (Required, Int)
-- iv: The initialization vector (Optional, bytes)
-- start: When does this key start being valid in UTC (Optional, Date)
-- expire: When does this key expire in UTC (Optional, Date)
-
-File Format
-------------
-
-- content: The file's bytes (Required, bytes)
-- name: The file's name (Required, UTF-8 String)
-- mime: The file's mime type (Required, UTF-8 String)
-
-Connection Format
-------------
-
-- host: The server's host name (Required, UTF-8 String)
-- port: The server's port for communication (Required, Int)
-- path: The server's path for web server integration (Optional, , UTF-8 String)
-- hmac: Shared secret for HMAC (Optional, bytes)
-- acceptance: What minimal level of identity/integrity is required for it to be accepted? (Required, ENUM)
-
-The acceptance levels will specify what the server requires in order to accept messages.  For example if the level is set to HMAC, than a Signature can be substituted since it provides a higher level of integrity and identity verification.  For secure/private communications, Signature Open/Hidden can be specified, which requires a signature tag to be present, but the sender's identity can be hidden inside the message if available.  Since you can hide a sender's identity, a message would need to be opened first before confirming its validity, so a HMAC can also be included to add additional levels of protection from tampering.  Also signature's/HMAC's would be built from multiple sources, such as the encrypted envelope/key bytes, time it was generated, and HMAC if possible.  Having the Signature/HMAC built from multiple sources adds an extra layer of protection, since if a piece of the chain was altered or removed the resulting hashes would fail.
-
 Appendix
 ================
 
@@ -166,7 +106,7 @@ In order to reduce spam servers can deploy a proof of work requirement on client
 Threads
 ------------
 
-Unlike current mail systems where thread views have been a late addition, each message in our system will have it's own unique identity number.  When a client receives a message, it can check if its linked to another message and properly thread the mails.  Also with this system, previous messages don't need to be included with reply's.
+Unlike current mail systems where threaded views have been a late addition, each message in our system will have it's own unique identity number.  When a client receives a message, it can check if its linked to another message and properly thread the mails.  Also with this system, previous messages don't need to be included with reply's.
 
 Key Exchanges
 ------------

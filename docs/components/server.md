@@ -1,0 +1,3 @@
+# Server Component
+
+# General Idea

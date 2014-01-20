@@ -31,22 +31,22 @@ This field would store the date and time the envelope was generated in UTC time.
 
 This is a simple digest used to verify a file's integrity, but it cannot stop tampering.
 
-*Fields to hash*
+*Fields to digest*
 
-- envelope (encrypted bytes)
-- identity (encrypted bytes)
-- key (encrypted bytes)
+- envelope (the encrypted FileLink bytes)
+- identity (the encrypted FileLink bytes)
+- key (the encrypted FileLink bytes)
 - generated (the long bytes)
 
 ### hmac (optional, MacTransport)
 
 This is a more advanced digest which requires a shared secret key.  This provides more strength than a standard digest field.
 
-*Fields to hash*
+*Fields to digest*
 
-- envelope (encrypted bytes)
-- identity (encrypted bytes)
-- key (encrypted bytes)
+- envelope (the encrypted FileLink bytes)
+- identity (the encrypted FileLink bytes)
+- key (the encrypted FileLink bytes)
 - generated (the long bytes)
 
 ###  signature (optional, SignatureTransport)
@@ -55,8 +55,8 @@ This is similar to the hmac field, but the receiver will need to use the sender'
 
 *Fields to sign*
 
-- envelope (encrypted bytes)
-- identity (encrypted bytes)
-- key (encrypted bytes)
-- generated (the time as long bytes)
-- hmac (the hmac digest bytes)
+- envelope (the encrypted FileLink bytes)
+- identity (the encrypted FileLink bytes)
+- key (the encrypted FileLink bytes)
+- generated (time as long bytes)
+- hmac (the hmac's digest bytes)
